@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Porto Web</title>
+  <meta name="description" content="Portfolio Website" />
+  <link rel="icon" href="./favicon.ico" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        if (saved === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else if (
+          !saved &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: light)").matches
+        ) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0f1115;
+      --panel: #151922;
+      --panel-2: #0d1117;
+      --text: #e6e6e6;
+      --muted: #b7bdc9;
+      --accent: #5cc8ff;
+      --accent-2: #9bff9b;
+      --border: #222938;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-lg: 22px;
+      --maxw: 1080px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+        Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji",
+        "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 10% -10%,
+          rgba(92, 200, 255, 0.15),
+          transparent 60%),
+        radial-gradient(800px 400px at 110% 10%,
+          rgba(155, 255, 155, 0.12),
+          transparent 55%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    header.site {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 20px;
+      align-items: center;
+      padding: 24px;
+      background: linear-gradient(180deg,
+          rgba(21, 25, 34, 0.9),
+          rgba(13, 17, 23, 0.85));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      backdrop-filter: blur(6px);
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .title h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      letter-spacing: 0.2px;
+    }
+
+    .title p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .links {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: transform 0.15s ease, border-color 0.2s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .flex-spacer {
+      flex: 1 1 auto;
+    }
+
+    .switch {
+      --h: 28px;
+      --w: 52px;
+      --p: 3px;
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      display: inline-block;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      cursor: pointer;
+    }
+
+    .switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    .switch .slider {
+      position: absolute;
+      top: var(--p);
+      left: var(--p);
+      width: calc(var(--h) - var(--p) * 2);
+      height: calc(var(--h) - var(--p) * 2);
+      border-radius: 50%;
+      background: var(--text);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .switch input:checked+.slider {
+      transform: translateX(calc(var(--w) - var(--h)));
+      background: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr 320px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      header.site {
+        position: static;
+        top: auto;
+        grid-template-columns: 72px 1fr;
+        gap: 14px;
+        padding: 16px;
+      }
+      .avatar { width: 72px; height: 72px; }
+      .title h1 { font-size: 22px; }
+      .links { gap: 8px; }
+      .chip { padding: 7px 10px; }
+    }
+
+    .card {
+      background: linear-gradient(180deg,
+          rgba(21, 25, 34, 0.85),
+          rgba(13, 17, 23, 0.9));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary {
+      font-size: 15px;
+    }
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #223;
+    }
+
+    .tl-item {
+      position: relative;
+      padding-left: 36px;
+      margin: 16px 0;
+    }
+
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%,
+          var(--accent),
+          #2a6b8b 70%);
+      box-shadow: 0 0 0 3px rgba(92, 200, 255, 0.15);
+    }
+
+    .tl-item .when {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tl-item h3 {
+      margin: 4px 0 6px;
+      font-size: 16px;
+    }
+
+    .tl-item p {
+      margin: 0;
+    }
+
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: linear-gradient(180deg, #1b2231, #141a25);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .contact li {
+      margin: 6px 0;
+    }
+
+    .projects {
+      display: grid;
+      gap: 12px;
+    }
+
+    .project {
+      background: linear-gradient(180deg, #141a25, #121722);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .project:hover {
+      border-color: var(--accent-2);
+      transform: translateY(-2px);
+    }
+
+    .project h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .project p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 28px;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --panel-2: #f2f6fb;
+      --text: #0f1115;
+      --muted: #5c677a;
+      --accent: #0ea5e9;
+      --accent-2: #16a34a;
+      --border: #d8e0ec;
+    }
+
+    html[data-theme="light"] header.site {
+      background: linear-gradient(180deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(245, 248, 252, 0.95));
+    }
+
+    html[data-theme="light"] .card {
+      background: linear-gradient(180deg,
+          rgba(255, 255, 255, 0.96),
+          rgba(245, 248, 252, 0.96));
+    }
+
+    html[data-theme="light"] .chip {
+      background: linear-gradient(180deg, #ffffff, #f2f6fb);
+    }
+
+    html[data-theme="light"] .project {
+      background: linear-gradient(180deg, #ffffff, #f3f7fb);
+    }
+
+    html[data-theme="light"] .tag {
+      background: linear-gradient(180deg, #ffffff, #eef4fa);
+    }
+
+    html[data-theme="light"] .timeline::before {
+      background: #e6edf5;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="scroll-progress"></div>
+  <div class="wrap">
+    <header class="site">
+      <img class="avatar" src="images/gallery/myself.jpg" alt="Foto Profil" />
+      <div class="title">
+        <h1>Yazid Alrasyid</h1>
+        <p>Tech Hardware • Programmer • Tech Support</p>
+        <div class="links">
+          <a class="chip" href="mailto:yazidalrasyid821@gmail.com">Email</a>
+          <a class="chip" href="https://github.com/yajidms" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="chip" href="https://www.linkedin.com/in/yazid-alrasyid-011498320/" target="_blank"
+            rel="noreferrer">LinkedIn</a>
+          <span class="flex-spacer"></span>
+          <label class="switch" title="Tema gelap/terang">
+            <input id="themeSwitch" type="checkbox" role="switch" aria-label="Tema gelap/terang" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <main class="col">
+        <section class="card summary reveal" data-animate="up">
+          <h2>Tentang</h2>
+          <p>
+            Saya programmer dari tech hardware punya ketertarikan pada
+            performa web dan aksesibilitas. Berpengalaman dalam maintenance
+            Laptop/Desktop, membuat sebuah aplikasi/bot, dan memberikan solusi
+            terhadap problem dialami member di Discord/Reddit. Terbuka dalam
+            feedback.
+          </p>
+        </section>
+        <section class="card reveal" data-animate="up">
+          <h2>Pengalaman</h2>
+          <div class="timeline">
+            <article class="tl-item reveal" data-animate="left">
+              <div class="when">2024 — Sekarang</div>
+              <h3>Admin IMPHNEN — PT IMPHNEN</h3>
+              <p>Memantau Server Discord IMPHNEN</p>
+            </article>
+            <article class="tl-item reveal" data-animate="left">
+              <div class="when">2021 — Sekarang</div>
+              <h3>Tech Support Lenovo Discord — Lenovo Indonesia</h3>
+              <p>
+                Membantu dalam permasalahan yang dikeluhin oleh customer dan
+                siap mengambil tindakan lebih lanjut.
+              </p>
+            </article>
+          </div>
+        </section>
+        <section class="card reveal" data-animate="up">
+          <h2>Proyek Pilihan</h2>
+          <div class="projects">
+            <article class="project featured reveal" data-animate="up">
+              <h3>Bot AI Discord</h3>
+              <p>
+                Bot AI Discord yang membantu pengguna dalam mengelola pertanyaan dengan promp AI dan sebagai asisten di server Discord.
+              </p>
+              <div class="gallery">
+                <figure class="reveal" data-animate="up">
+                  <img loading="lazy" src="images/project/botdiscord.png" alt="botdiscord.png" />
+                  <figcaption>botdiscord.png</figcaption>
+                </figure>
+                <figure class="reveal" data-animate="up">
+                  <img loading="lazy" src="images/project/botdiscord1.png" alt="botdiscord1.png" />
+                  <figcaption>botdiscord1.png</figcaption>
+                </figure>
+                <figure class="reveal" data-animate="up">
+                  <img loading="lazy" src="images/project/botdiscord2.png" alt="botdiscord2.png" />
+                  <figcaption>botdiscord2.png</figcaption>
+                </figure>
+              </div>
+              <div class="project-actions">
+                <a class="chip" href="https://github.com/yajidms/bot-gajelas" target="_blank" rel="noreferrer">Demo</a>
+              </div>
+            </article>
+            <article class="project featured reveal" data-animate="up">
+              <h3>Brick Racer</h3>
+              <p>
+                Gameplay balap yang berfokus pada menghindari rintangan dan mencapai garis finish.
+              </p>
+              <div class="gallery">
+                <figure class="reveal" data-animate="up">
+                  <img loading="lazy" src="images/project/brickracer.png" alt="brickracer.png" />
+                  <figcaption>brickracer.png</figcaption>
+                </figure>
+              </div>
+              <div class="project-actions">
+                <a class="chip" href="https://github.com/alatteee/c1-proyek2" target="_blank" rel="noreferrer">Demo</a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <aside class="col">
+        <section class="card reveal" data-animate="right">
+          <h2>Keterampilan</h2>
+          <div class="stack">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Java</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">C</span>
+            <span class="tag">C++</span>
+          </div>
+        </section>
+        <section class="card reveal" data-animate="right">
+          <h2>Kontak</h2>
+          <ul class="contact">
+            <li>Email: yazidalrasyid821@gmail.com</li>
+            <li>Telp/WA: 0823-2033-6868</li>
+            <li>Kota: Bandung</li>
+          </ul>
+        </section>
+        <section class="card reveal" data-animate="right">
+          <h2>Pendidikan</h2>
+          <ul class="contact">
+            <li>
+              D3 Informatika — Politeknik Negeri Bandung (2024—Sekarang)
+            </li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+
+    <footer>
+      <p>© <span id="y"></span> Yazid Alrasyid — CV/Portfolio</p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+    (function () {
+      var root = document.documentElement;
+      var sw = document.getElementById("themeSwitch");
+      if (!sw) return;
+      sw.checked = root.getAttribute("data-theme") === "light";
+
+      sw.addEventListener("change", function (e) {
+        var light = e.target.checked;
+        if (light) {
+          root.setAttribute("data-theme", "light");
+          try {
+            localStorage.setItem("theme", "light");
+          } catch (err) { }
+        } else {
+          root.removeAttribute("data-theme");
+          try {
+            localStorage.setItem("theme", "dark");
+          } catch (err) { }
+        }
+      });
+    })();
+  </script>
+  <script type="module" src="./app.js"></script>
+</body>
+
+</html>

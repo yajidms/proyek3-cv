@@ -1,0 +1,77 @@
+:root {
+  --reveal-y: 16px;
+  --reveal-duration: 600ms;
+  --reveal-ease: cubic-bezier(.2, .65, .25, 1);
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  width: 0%;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .15);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y));
+  will-change: transform, opacity;
+}
+
+.reveal[data-animate="left"] {
+  transform: translateX(-20px);
+}
+
+.reveal[data-animate="right"] {
+  transform: translateX(20px);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition: transform var(--reveal-duration) var(--reveal-ease), opacity var(--reveal-duration) var(--reveal-ease);
+}
+
+.gallery {
+  display: grid;
+  gap: 12px;
+}
+
+.gallery figure {
+  margin: 0;
+  background: linear-gradient(180deg, #141a25, #121722);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gallery figcaption {
+  display: none;
+}
+
+.project.featured {
+  border-color: var(--accent);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .25) inset;
+}
+
+.project .project-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 520px) {
+  .slider img {
+    height: 220px;
+  }
+}
